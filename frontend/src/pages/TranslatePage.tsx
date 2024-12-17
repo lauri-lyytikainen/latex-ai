@@ -12,6 +12,7 @@ import TranslateStringToLatex from "../services/TranslateService"
 
 export default function TranslatePage() {
   const [text, setText] = useState("")
+  const [showLatex, setShowLatex] = useState(false)
   const [latexResponse, setLatexResponse] = useState<LatexResponse>({
     latex_string: "",
     valid_response: false,
@@ -22,6 +23,10 @@ export default function TranslatePage() {
   }
 
   function translate(text: string) {
+    if (text === "") {
+      setLatexResponse({ latex_string: "", valid_response: false })
+      return
+    }
     TranslateStringToLatex(text).then(response => {
       console.log(response)
       setLatexResponse(response)
@@ -59,9 +64,21 @@ export default function TranslatePage() {
           rows={4}
           fullWidth={true}
           disabled={true}
-          value={latexResponse.latex_string}
+          value={
+            showLatex
+              ? latexResponse.latex_string
+              : "Rendered view of " + latexResponse.latex_string
+          }
         />
-        <FormControlLabel control={<Switch />} label="Show Latex code" />
+        <FormControlLabel
+          control={
+            <Switch
+              checked={showLatex}
+              onChange={() => setShowLatex(!showLatex)}
+            />
+          }
+          label="Show Latex code"
+        />
       </Stack>
     </Container>
   )
