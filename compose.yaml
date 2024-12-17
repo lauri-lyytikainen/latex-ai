@@ -1,0 +1,10 @@
+services:
+  frontend:
+    container_name: latex-ai-frontend
+    build:
+      context: ./frontend
+    restart: unless-stopped
+    ports:
+      - 5173:5173
+    volumes:
+      - ./frontend/src:/app/src
