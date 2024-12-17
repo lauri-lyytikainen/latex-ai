@@ -8,8 +8,10 @@ import {
   Card,
   CardContent,
   Divider,
-  Button,
+  Chip,
 } from "@mui/material"
+// copy icon
+import ContentCopyIcon from "@mui/icons-material/ContentCopy"
 import React, { useEffect, useState } from "react"
 import LatexResponse from "../Interfaces/types"
 import TranslateStringToLatex from "../services/TranslateService"
@@ -75,7 +77,17 @@ export default function TranslatePage() {
         <Card
           variant="outlined"
           sx={{ width: "100%", height: "100%", minHeight: "100px" }}>
-          <CardContent>
+          <CardContent sx={{ position: "relative" }}>
+            {/* Copy chip */}
+            <Chip
+              label="Copy Latex"
+              icon={<ContentCopyIcon fontSize="small" />}
+              size="small"
+              sx={{ position: "absolute", top: 8, right: 8, padding: "10px" }}
+              onClick={() => {
+                navigator.clipboard.writeText(latexResponse.latex_string)
+              }}
+            />
             <div
               dangerouslySetInnerHTML={{
                 __html: katex.renderToString(latexResponse.latex_string, {
