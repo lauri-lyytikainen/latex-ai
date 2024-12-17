@@ -21,12 +21,11 @@ def translate_text_to_latex(input_string: str) -> LatexResponse:
         messages=[
             {
                 "role": "system",
-                "content": "Your task is to convert text to LaTeX, answer only in latex without $ signs. Consider first if the message is not a math expression or related to anything other than latex set valid_response false. Answer in the following json format {latex_string: str, valid_response: boolean}",
+                "content": "Your task is to convert text to LaTeX, answer only in latex without $ signs. If the message is not a math expression or related to anything other than latex set valid_response false. Answer in the following json format {latex_string: str, valid_response: boolean}",
             },
             {"role": "user", "content": input_string},
         ],
-        model="gemma2-9b-it",
-        temperature=1,
+        model="llama3-8b-8192",
         response_format={"type": "json_object"},
     )
 

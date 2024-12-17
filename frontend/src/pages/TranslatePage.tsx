@@ -6,11 +6,39 @@ import {
   FormControlLabel,
   Switch,
 } from "@mui/material"
+import React, { useEffect, useState } from "react"
+import LatexResponse from "../Interfaces/types"
+import TranslateStringToLatex from "../services/TranslateService"
 
 export default function TranslatePage() {
+  const [text, setText] = useState("")
+  const [debouncedText, setDebouncedText] = useState(text)
+  const [latexResponse, setLatexResponse] = useState<LatexResponse>({
+    latex_string: "",
+    valid_response: false,
+  })
+
   function handleTextChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    console.log(e.target.value)
+    setText(e.target.value)
   }
+
+  function translate() {
+    TranslateStringToLatex(debouncedText).then(response => {
+      console.log(response)
+      setLatexResponse(response)
+    })
+  }
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedText(text)
+      translate()
+    }, 2000)
+
+    return () => {
+      clearTimeout(handler)
+    }
+  }, [text])
 
   return (
     <Container>
@@ -33,6 +61,7 @@ export default function TranslatePage() {
           rows={4}
           fullWidth={true}
           disabled={true}
+          value={latexResponse.latex_string}
         />
         <FormControlLabel control={<Switch />} label="Show Latex code" />
       </Stack>
