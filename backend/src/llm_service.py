@@ -16,6 +16,7 @@ def translate_text_to_latex(input_string: str) -> LatexResponse:
         raise ValueError("GROQ_API_KEY environment variable is not set")
 
     client = Groq(api_key=api_key)
+    print(f"Translating text to LaTeX: {input_string}")
 
     chat_completion = client.chat.completions.create(
         messages=[
@@ -25,15 +26,19 @@ def translate_text_to_latex(input_string: str) -> LatexResponse:
             },
             {"role": "user", "content": input_string},
         ],
-        model="llama3-8b-8192",
+        model="llama3-70b-8192",
+        temperature=1,
+        max_tokens=1024,
+        top_p=1,
+        stream=False,
         response_format={"type": "json_object"},
+        stop=None,
     )
 
     # Check that the response did not produce an error
     llm_reponse = ""
     try:
         llm_reponse = chat_completion.choices[0].message.content
-        print(f"Translated text to LaTeX: {llm_reponse}")
     except Exception as e:
         print(f"Error: {e}")
 

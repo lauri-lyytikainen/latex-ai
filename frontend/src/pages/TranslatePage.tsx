@@ -12,7 +12,6 @@ import TranslateStringToLatex from "../services/TranslateService"
 
 export default function TranslatePage() {
   const [text, setText] = useState("")
-  const [debouncedText, setDebouncedText] = useState(text)
   const [latexResponse, setLatexResponse] = useState<LatexResponse>({
     latex_string: "",
     valid_response: false,
@@ -22,8 +21,8 @@ export default function TranslatePage() {
     setText(e.target.value)
   }
 
-  function translate() {
-    TranslateStringToLatex(debouncedText).then(response => {
+  function translate(text: string) {
+    TranslateStringToLatex(text).then(response => {
       console.log(response)
       setLatexResponse(response)
     })
@@ -31,8 +30,7 @@ export default function TranslatePage() {
 
   useEffect(() => {
     const handler = setTimeout(() => {
-      setDebouncedText(text)
-      translate()
+      translate(text)
     }, 2000)
 
     return () => {

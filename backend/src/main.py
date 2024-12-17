@@ -5,11 +5,18 @@ from fastapi import FastAPI, Request, Response, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
 from dotenv import load_dotenv
+from pydantic import BaseModel
 
 # Load environment variables
 load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
 import src.llm_service as llm_service
+
+
+class LatexResponse(BaseModel):
+    latex_string: str
+    valid_response: bool
+
 
 app = FastAPI()
 logger = structlog.get_logger()
@@ -64,6 +71,6 @@ async def healthcheck():
 
 
 @app.get("/translate")
-async def translate(text_expression: str = Query(...)):
+async def translate(text_expression: str = Query(...)) -> LatexResponse:
     logger.info("In translate path", text_expression=text_expression)
     return llm_service.translate_text_to_latex(text_expression)
