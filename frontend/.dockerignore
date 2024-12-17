@@ -12,11 +12,8 @@ dist
 dist-ssr
 *.local
 
-__pycache__/
-
 # Editor directories and files
 .vscode/*
-!.vscode/extensions.json
 .idea
 .DS_Store
 *.suo
@@ -25,5 +22,13 @@ __pycache__/
 *.sln
 *.sw?
 
-# Secrets
+# Additional files
+.git
+.gitignore
 .env
+README.md
+coverage
+Dockerfile*
+*compose*
+.prettierrc.json
+eslint.config.js

@@ -8,3 +8,15 @@ services:
       - 5173:5173
     volumes:
       - ./frontend/src:/app/src
+
+  backend:
+    container_name: latex-ai-backend
+    build:
+      context: ./backend
+    restart: unless-stopped
+    ports:
+      - 8000:8000
+    volumes:
+      - ./backend/src:/app/src
+    # depends_on:
+    #   - frontend
