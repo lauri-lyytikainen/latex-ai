@@ -9,8 +9,90 @@ package-mode = false
 python = "^3.10"
 fastapi = {extras = ["standard"], version = "^0.115.6"}
 uvicorn = "^0.34.0"
+structlog = "^24.4.0"
+groq = "^0.13.1"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.8.3"
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+# Enable linting rules, see https://docs.astral.sh/ruff/rules for specifics
+select = [
+    # Pyflakes
+    "F",
+    # pycodestyle
+    "E", "W",
+    # mccabe
+    "C90",
+    # isort
+    "I",
+    # pep8-naming
+    "N",
+    # pydocstyle
+    "D",
+    # pyupgrade
+    "UP",
+    # flake8-annotations
+    "ANN",
+    # flake8-async
+    "ASYNC",
+    # flake8-bandit
+    "S",
+    # flake8-bugbear
+    "B",
+    # flake8-builtins
+    "A",
+    # flake8-datetimez
+    "DTZ",
+    # flake8-django
+    "DJ",
+    # flake8-implicit-str-concat
+    "ISC",
+    # flake8-import-conventions
+    "ICN",
+    # flake8-logging-format
+    "G",
+    # flake8-pie
+    "PIE",
+    # flake8-raise
+    "RSE",
+    # flake8-return
+    "RET",
+    # flake8-simplify
+    "SIM",
+    # flake8-type-checking
+    "TCH",
+    # flake8-unused-arguments
+    "ARG",
+    # flake8-use-pathlib
+    "PTH",
+    # eradicate
+    "ERA",
+    # Pylint
+    "PL",
+    # Ruff-specific rules
+    "RUF",
+]
+
+ignore = [
+    "D100",
+    "D101",
+    "D104",
+    "D105",
+    "D106",
+    "D107",
+    "D203",
+    "D205",
+    "D212",
+    "ISC001",
+    "ANN101",
+    "RUF012",
+]
