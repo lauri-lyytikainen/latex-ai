@@ -9,8 +9,8 @@ import {
   CardContent,
   Divider,
   Chip,
+  CircularProgress,
 } from "@mui/material"
-// copy icon
 import ContentCopyIcon from "@mui/icons-material/ContentCopy"
 import React, { useEffect, useState } from "react"
 import LatexResponse from "../Interfaces/types"
@@ -20,7 +20,9 @@ import "katex/dist/katex.min.css"
 
 export default function TranslatePage() {
   const [text, setText] = useState("")
+  const [debounceText, setDebounceText] = useState("")
   const [showLatex, setShowLatex] = useState(false)
+  const [waitingResponse, setWaitingResponse] = useState(false)
   const [latexResponse, setLatexResponse] = useState<LatexResponse>({
     latex_string: "",
     valid_response: false,
@@ -28,21 +30,28 @@ export default function TranslatePage() {
 
   function handleTextChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setText(e.target.value)
+    setWaitingResponse(true)
   }
 
-  function translate(text: string) {
-    if (text === "") {
+  function translate(input: string): void {
+    if (input.trim() === "") {
       setLatexResponse({ latex_string: "", valid_response: false })
+      setWaitingResponse(false)
       return
     }
-    TranslateStringToLatex(text).then(response => {
-      console.log(response)
+    TranslateStringToLatex(input).then(response => {
       setLatexResponse(response)
+      setWaitingResponse(false)
     })
   }
 
   useEffect(() => {
     const handler = setTimeout(() => {
+      if (text === debounceText) {
+        setWaitingResponse(false)
+        return
+      }
+      setDebounceText(text)
       translate(text)
     }, 2000)
 
@@ -65,6 +74,16 @@ export default function TranslatePage() {
           placeholder="Integral of x^2 in range of 0 to 10"
           fullWidth={true}
           onChange={handleTextChange}
+          error={
+            !latexResponse.valid_response &&
+            text.trim() !== "" &&
+            !waitingResponse
+          }
+          helperText={
+            !latexResponse.valid_response && !waitingResponse
+              ? "Invalid input"
+              : ""
+          }
         />
 
         <FormControlLabel
@@ -80,7 +99,6 @@ export default function TranslatePage() {
           variant="outlined"
           sx={{ width: "100%", height: "100%", minHeight: "100px" }}>
           <CardContent sx={{ position: "relative" }}>
-            {/* Copy chip */}
             <Chip
               label="Copy Latex"
               icon={<ContentCopyIcon fontSize="small" />}
@@ -90,7 +108,21 @@ export default function TranslatePage() {
                 navigator.clipboard.writeText(latexResponse.latex_string)
               }}
             />
-            <div
+            {waitingResponse ? (
+              <CircularProgress
+                sx={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  marginTop: "-24px",
+                  marginLeft: "-24px",
+                }}
+              />
+            ) : null}
+            <Typography
+              variant="body1"
+              color={waitingResponse ? "text.disabled" : "text.primary"}
               dangerouslySetInnerHTML={{
                 __html: katex.renderToString(latexResponse.latex_string, {
                   throwOnError: false,
