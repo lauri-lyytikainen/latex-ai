@@ -10,6 +10,8 @@ import {
   Divider,
   Chip,
   CircularProgress,
+  ButtonGroup,
+  Button,
 } from "@mui/material"
 import ContentCopyIcon from "@mui/icons-material/ContentCopy"
 import React, { useEffect, useState } from "react"
@@ -27,6 +29,18 @@ export default function TranslatePage() {
     latex_string: "",
     valid_response: false,
   })
+  const [fontSize, setFontSize] = useState(16)
+
+  function increaseFontSize() {
+    if (fontSize < 26) {
+      setFontSize(fontSize + 2)
+    }
+  }
+  function decreaseFontSize() {
+    if (fontSize > 16) {
+      setFontSize(fontSize - 2)
+    }
+  }
 
   function handleTextChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setText(e.target.value)
@@ -97,8 +111,12 @@ export default function TranslatePage() {
         />
         <Card
           variant="outlined"
-          sx={{ width: "100%", height: "100%", minHeight: "100px" }}>
-          <CardContent sx={{ position: "relative" }}>
+          sx={{
+            width: "100%",
+            height: "100%",
+            minHeight: "100px",
+          }}>
+          <CardContent sx={{ position: "relative", minHeight: "100px" }}>
             <Chip
               label="Copy Latex"
               icon={<ContentCopyIcon fontSize="small" />}
@@ -120,8 +138,23 @@ export default function TranslatePage() {
                 }}
               />
             ) : null}
+            <ButtonGroup
+              orientation="vertical"
+              sx={{
+                position: "absolute",
+                top: "50%",
+                transform: "translate(0, -50%)",
+              }}>
+              <Button sx={{ fontSize: "16px" }} onClick={increaseFontSize}>
+                +
+              </Button>
+              <Button sx={{ fontSize: "16px" }} onClick={decreaseFontSize}>
+                -
+              </Button>
+            </ButtonGroup>
             <Typography
               variant="body1"
+              fontSize={fontSize}
               color={waitingResponse ? "text.disabled" : "text.primary"}
               dangerouslySetInnerHTML={{
                 __html: katex.renderToString(latexResponse.latex_string, {
