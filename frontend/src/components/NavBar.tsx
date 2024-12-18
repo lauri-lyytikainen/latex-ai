@@ -10,6 +10,7 @@ import Container from "@mui/material/Container"
 import Button from "@mui/material/Button"
 import MenuItem from "@mui/material/MenuItem"
 import AdbIcon from "@mui/icons-material/Adb"
+import logo from "../static/logo-white.png"
 
 const pages = ["Translate", "Examples", "About"]
 
@@ -25,9 +26,10 @@ export default function NavBar() {
 
   return (
     <AppBar position="static">
-      <Container maxWidth="xl">
+      <Container
+        maxWidth="xl"
+        sx={{ minHeight: "6rem", alignContent: "center" }}>
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -42,7 +44,7 @@ export default function NavBar() {
               color: "inherit",
               textDecoration: "none",
             }}>
-            LOGO
+            <img src={logo} alt="logo" style={{ height: "4rem" }} />
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -81,7 +83,6 @@ export default function NavBar() {
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
@@ -97,9 +98,14 @@ export default function NavBar() {
               color: "inherit",
               textDecoration: "none",
             }}>
-            LOGO
+            <img src={logo} alt="logo" style={{ height: "4rem" }} />
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", md: "flex" },
+              justifyContent: "flex-end",
+            }}>
             {pages.map(page => (
               <Button
                 key={page}
