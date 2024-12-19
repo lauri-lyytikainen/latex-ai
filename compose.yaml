@@ -22,3 +22,16 @@ services:
       - .env
     volumes:
       - ./backend/src:/app/src
+  #   depends_on:
+  #     - backend-test
+
+  # backend-test:
+  #   container_name: latex-ai-backend-test
+  #   build:
+  #     context: ./backend
+  #   command: ["poetry", "run", "pytest"]
+  #   env_file:
+  #     - .env
+  #   volumes:
+  #     - ./backend/src:/app/src
+  #     - ./backend/tests:/app/tests
