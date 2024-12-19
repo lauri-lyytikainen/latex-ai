@@ -14,6 +14,8 @@ import {
   Button,
 } from "@mui/material"
 import ContentCopyIcon from "@mui/icons-material/ContentCopy"
+import AddIcon from "@mui/icons-material/Add"
+import RemoveIcon from "@mui/icons-material/Remove"
 import React, { useEffect, useState } from "react"
 import LatexResponse from "../Interfaces/types"
 import TranslateStringToLatex from "../services/TranslateService"
@@ -94,7 +96,9 @@ export default function TranslatePage() {
             !waitingResponse
           }
           helperText={
-            !latexResponse.valid_response && !waitingResponse
+            !latexResponse.valid_response &&
+            !waitingResponse &&
+            text.trim() !== ""
               ? "Invalid input"
               : ""
           }
@@ -146,10 +150,10 @@ export default function TranslatePage() {
                 transform: "translate(0, -50%)",
               }}>
               <Button sx={{ fontSize: "16px" }} onClick={increaseFontSize}>
-                +
+                <AddIcon />
               </Button>
               <Button sx={{ fontSize: "16px" }} onClick={decreaseFontSize}>
-                -
+                <RemoveIcon />
               </Button>
             </ButtonGroup>
             <Typography
