@@ -1,16 +1,17 @@
 import uuid
+from pathlib import Path
+from typing import Callable
 
 import structlog
-from fastapi import FastAPI, Request, Response, Query
-from fastapi.middleware.cors import CORSMiddleware
-from pathlib import Path
 from dotenv import load_dotenv
+from fastapi import FastAPI, Query, Request, Response
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 # Load environment variables
 load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
-import src.llm_service as llm_service
+from src import llm_service  # noqa: E402
 
 
 class LatexResponse(BaseModel):
@@ -36,7 +37,18 @@ app.add_middleware(
 
 
 @app.middleware("http")
-async def logger_middleware(request: Request, call_next):
+async def logger_middleware(request: Request, call_next: Callable[[Request], Response]) -> Response:
+    """
+    Middleware to log requests and responses.
+
+    Args:
+        request (Request): Request object.
+        call_next (Callable[[Request], Response]): Next middleware in the chain.
+
+    Returns:
+        Response: Response object.
+
+    """
     structlog.contextvars.clear_contextvars()
     structlog.contextvars.bind_contextvars(
         path=request.url.path,
@@ -52,9 +64,9 @@ async def logger_middleware(request: Request, call_next):
 
     # Exclude /healthcheck endpoint from producing logs
     if request.url.path != "/healthcheck":
-        if 400 <= response.status_code < 500:
-            logger.warn("Client error")
-        elif response.status_code >= 500:
+        if 400 <= response.status_code < 500:  # noqa: PLR2004
+            logger.warning("Client error")
+        elif response.status_code >= 500:  # noqa: PLR2004
             logger.error("Server error")
         else:
             logger.info("OK")
@@ -63,11 +75,28 @@ async def logger_middleware(request: Request, call_next):
 
 
 @app.get("/healthcheck")
-async def healthcheck():
+async def healthcheck() -> Response:
+    """
+    Healthcheck endpoint.
+
+    Returns:
+        Response: Empty response with status code 200.
+
+    """
     return Response()
 
 
 @app.get("/translate")
 async def translate(text_expression: str = Query(...)) -> LatexResponse:
+    """
+    Translate text expression to LaTeX.
+
+    Args:
+        text_expression (str): Text expression to translate.
+
+    Returns:
+        LatexResponse: Translated LaTeX string.
+
+    """
     logger.info("In translate path", text_expression=text_expression)
     return llm_service.translate_text_to_latex(text_expression)

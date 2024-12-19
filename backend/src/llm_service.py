@@ -1,5 +1,6 @@
-from groq import Groq
 import os
+
+from groq import Groq
 from pydantic import BaseModel
 
 
@@ -9,8 +10,16 @@ class LatexResponse(BaseModel):
 
 
 def translate_text_to_latex(input_string: str) -> LatexResponse:
-    """Translate the given input string to LaTeX."""
+    """
+    Translate the given input string to LaTeX.
 
+    Args:
+        input_string (str): The input string to translate.
+
+    Returns:
+        LatexResponse: The translated LaTeX string.
+
+    """
     api_key = os.environ.get("GROQ_API_KEY")
     if not api_key:
         raise ValueError("GROQ_API_KEY environment variable is not set")
@@ -22,7 +31,12 @@ def translate_text_to_latex(input_string: str) -> LatexResponse:
         messages=[
             {
                 "role": "system",
-                "content": "Your task is to convert text to LaTeX, answer only in latex without $ signs. If the message is not a math expression or related to anything other than latex set valid_response false. Answer in the following json format {latex_string: str, valid_response: boolean}",
+                "content": (
+                    "Your task is to convert text to LaTeX, answer only in latex without $ signs. "
+                    "If the message is not a math expression or related to anything other than latex "
+                    "set valid_response false. Answer in the following json format {latex_string: str, "
+                    "valid_response: boolean}"
+                ),
             },
             {"role": "user", "content": input_string},
         ],
