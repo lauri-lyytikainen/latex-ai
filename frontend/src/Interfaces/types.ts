@@ -1,6 +1,6 @@
 interface LatexResponse {
   latex_string: string
-  valid_response: boolean
+  response_type: "valid" | "invalid" | "error"
 }
 
 export default LatexResponse

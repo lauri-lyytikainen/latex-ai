@@ -1,12 +1,19 @@
 import os
 
+from enum import Enum
 from groq import Groq
 from pydantic import BaseModel
 
 
+class StatusCode(str, Enum):
+    valid = "valid"
+    invalid = "invalid"
+    error = "error"
+
+
 class LatexResponse(BaseModel):
     latex_string: str
-    valid_response: bool
+    response_type: StatusCode
 
 
 def translate_text_to_latex(input_string: str) -> LatexResponse:
@@ -34,8 +41,8 @@ def translate_text_to_latex(input_string: str) -> LatexResponse:
                 "content": (
                     "Your task is to convert text to LaTeX, answer only in latex without $ signs. "
                     "If the message is not a math expression or related to anything other than latex "
-                    "set valid_response false. Answer in the following json format {latex_string: str, "
-                    "valid_response: boolean}"
+                    "set response_type 'invalid'. Answer in the following json format {latex_string: str, "
+                    "response_type: 'valid' | 'invalid'}"
                 ),
             },
             {"role": "user", "content": input_string},
@@ -59,9 +66,9 @@ def translate_text_to_latex(input_string: str) -> LatexResponse:
     # Try to fit the response into a LatexResponse object
     try:
         latex_response = LatexResponse.model_validate_json(llm_reponse)
-        if latex_response.valid_response:
+        if latex_response.response_type == "valid":
             return latex_response
     except Exception as e:
         print(f"Error: {e}")
 
-    return LatexResponse(latex_string="", valid_response=False)
+    return LatexResponse(latex_string="", response_type="invalid")

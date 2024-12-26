@@ -1,11 +1,13 @@
 import uuid
 from pathlib import Path
 from typing import Callable
+from enum import Enum
 
 import structlog
 from dotenv import load_dotenv
 from fastapi import FastAPI, Query, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
+
 from pydantic import BaseModel
 
 # Load environment variables
@@ -14,9 +16,15 @@ load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 from src import llm_service  # noqa: E402
 
 
+class StatusCode(str, Enum):
+    valid = "valid"
+    invalid = "invalid"
+    error = "error"
+
+
 class LatexResponse(BaseModel):
     latex_string: str
-    valid_response: bool
+    response_type: StatusCode
 
 
 app = FastAPI()

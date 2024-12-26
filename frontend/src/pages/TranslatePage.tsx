@@ -12,6 +12,7 @@ import {
   CircularProgress,
   ButtonGroup,
   Button,
+  Alert,
 } from "@mui/material"
 import ContentCopyIcon from "@mui/icons-material/ContentCopy"
 import AddIcon from "@mui/icons-material/Add"
@@ -29,7 +30,7 @@ export default function TranslatePage() {
   const [waitingResponse, setWaitingResponse] = useState(false)
   const [latexResponse, setLatexResponse] = useState<LatexResponse>({
     latex_string: "",
-    valid_response: false,
+    response_type: "invalid",
   })
   const [fontSize, setFontSize] = useState(16)
 
@@ -51,7 +52,7 @@ export default function TranslatePage() {
 
   function translate(input: string): void {
     if (input.trim() === "") {
-      setLatexResponse({ latex_string: "", valid_response: false })
+      setLatexResponse({ latex_string: "", response_type: "invalid" })
       setWaitingResponse(false)
       return
     }
@@ -69,7 +70,7 @@ export default function TranslatePage() {
       }
       setDebounceText(text)
       translate(text)
-    }, 2000)
+    }, 1000)
 
     return () => {
       clearTimeout(handler)
@@ -91,18 +92,24 @@ export default function TranslatePage() {
           fullWidth={true}
           onChange={handleTextChange}
           error={
-            !latexResponse.valid_response &&
+            latexResponse.response_type === "invalid" &&
             text.trim() !== "" &&
             !waitingResponse
           }
           helperText={
-            !latexResponse.valid_response &&
+            latexResponse.response_type === "invalid" &&
             !waitingResponse &&
             text.trim() !== ""
               ? "Invalid input"
               : ""
           }
         />
+
+        {latexResponse.response_type === "error" ? (
+          <Alert severity="error">
+            An error ocurred, the server might be down. Try again later.
+          </Alert>
+        ) : null}
 
         <FormControlLabel
           control={
