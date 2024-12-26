@@ -1,6 +1,10 @@
 # .github/workflows/ci-cd.yml
 
-name: CI/CD Pipeline for Vite React App
+name: CI/CD Pipeline
+
+env:
+  AZURE_WEBAPP_NAME: MY_WEBAPP_NAME # set this to your application's name
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 on:
   push:
@@ -11,7 +15,7 @@ on:
       - main
 
 jobs:
-  build:
+  build-frontend:
     runs-on: ubuntu-latest
 
     steps:
@@ -44,9 +48,9 @@ jobs:
           name: build
           path: frontend/dist
 
-  deploy:
+  deploy-frontend:
     runs-on: ubuntu-latest
-    needs: build
+    needs: build-frontend
     steps:
       - name: Download Build Artifact
         uses: actions/download-artifact@v3
@@ -59,3 +63,58 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: frontend/dist
+
+  build-backend:
+    permissions:
+      contents: "read"
+      packages: "write"
+      
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Lowercase the repo name
+        run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+
+      - name: Build and push container image to registry
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: ghcr.io/${{ env.REPO }}-backend:${{ github.sha }}
+          file: ./backend/Dockerfile
+
+  deploy-backend:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: "read"
+      packages: "write"
+
+    needs: build-backend
+
+    environment:
+      name: "production"
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Lowercase the repo name
+        run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          images: "ghcr.io/${{ env.REPO }}:${{ github.sha }}"
