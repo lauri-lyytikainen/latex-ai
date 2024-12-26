@@ -5,8 +5,12 @@ export default async function TranslateOnServer(
   textString: string
 ): Promise<LatexResponse> {
   const encodedText = encodeURIComponent(textString)
+  const backendUrl = import.meta.env.DEV
+    ? "http://localhost:8000"
+    : import.meta.env.VITE_BACKEND_URL
+
   return axios
-    .get(`http://localhost:8000/translate?text_expression=${encodedText}`)
+    .get(`${backendUrl}/translate?text_expression=${encodedText}`)
     .then(response => {
       return response.data
     })

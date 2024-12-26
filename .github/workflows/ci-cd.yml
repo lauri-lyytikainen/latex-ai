@@ -41,6 +41,8 @@ jobs:
         run: |
           cd frontend
           npm run build
+        env:
+          VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3
