@@ -148,6 +148,7 @@ export default function TranslatePage() {
                 position: "absolute",
                 top: "50%",
                 transform: "translate(0, -50%)",
+                zIndex: 1,
               }}>
               <Button sx={{ fontSize: "16px" }} onClick={increaseFontSize}>
                 <AddIcon />
@@ -160,6 +161,9 @@ export default function TranslatePage() {
               variant="body1"
               fontSize={fontSize}
               color={waitingResponse ? "text.disabled" : "text.primary"}
+              minHeight={"8rem"}
+              paddingLeft={"5rem"}
+              alignContent={"center"}
               dangerouslySetInnerHTML={{
                 __html: katex.renderToString(latexResponse.latex_string, {
                   throwOnError: false,
