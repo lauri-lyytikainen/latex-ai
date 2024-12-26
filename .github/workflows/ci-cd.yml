@@ -3,7 +3,7 @@
 name: CI/CD Pipeline
 
 env:
-  AZURE_WEBAPP_NAME: MY_WEBAPP_NAME # set this to your application's name
+  AZURE_WEBAPP_NAME: latex-ai-backend # set this to your application's name
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 on:
@@ -68,7 +68,7 @@ jobs:
     permissions:
       contents: "read"
       packages: "write"
-      
+
     runs-on: ubuntu-latest
 
     steps:
@@ -91,6 +91,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
+          context: ./backend
           tags: ghcr.io/${{ env.REPO }}-backend:${{ github.sha }}
           file: ./backend/Dockerfile
 
@@ -117,4 +118,4 @@ jobs:
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          images: "ghcr.io/${{ env.REPO }}:${{ github.sha }}"
+          images: "ghcr.io/${{ env.REPO }}-backend:${{ github.sha }}"

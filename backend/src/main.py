@@ -22,10 +22,7 @@ class LatexResponse(BaseModel):
 app = FastAPI()
 logger = structlog.get_logger()
 
-origins = [
-    "http://localhost:8080",
-    "http://localhost:5173",
-]
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
