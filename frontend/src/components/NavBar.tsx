@@ -33,7 +33,7 @@ export default function NavBar() {
             variant="h6"
             noWrap
             component="a"
-            href="/"
+            href="/latex-ai"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -76,7 +76,7 @@ export default function NavBar() {
                   key={page}
                   onClick={handleCloseNavMenu}
                   component="a"
-                  href={`/${page.toLowerCase()}`}>
+                  href={`/latex-ai/#/${page.toLowerCase()}`}>
                   <Typography sx={{ textAlign: "center" }}>{page}</Typography>
                 </MenuItem>
               ))}
@@ -86,7 +86,7 @@ export default function NavBar() {
             variant="h5"
             noWrap
             component="a"
-            href="/"
+            href="/latex-ai"
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -108,7 +108,7 @@ export default function NavBar() {
             {pages.map(page => (
               <Button
                 key={page}
-                href={`/latex-ai/${page.toLowerCase()}`}
+                href={`/latex-ai/#/${page.toLowerCase()}`}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}>
                 {page}
