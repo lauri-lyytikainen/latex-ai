@@ -24,12 +24,12 @@ jobs:
           node-version: 23
 
       - name: Install Dependencies
-        run: | 
+        run: |
           cd frontend
           npm install
 
       - name: Run Tests
-        run: | 
+        run: |
           cd frontend
           npm test --if-present
 
@@ -42,7 +42,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: build
-          path: .frontend/dist
+          path: frontend/dist
 
   deploy:
     runs-on: ubuntu-latest
@@ -52,10 +52,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build
-          path: .frontend/dist
+          path: frontend/dist
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./frontend/dist
+          publish_dir: frontend/dist
