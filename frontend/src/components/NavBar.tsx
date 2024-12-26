@@ -108,7 +108,7 @@ export default function NavBar() {
             {pages.map(page => (
               <Button
                 key={page}
-                href={`/${page.toLowerCase()}`}
+                href={`/latex-ai/${page.toLowerCase()}`}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}>
                 {page}

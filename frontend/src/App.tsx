@@ -12,10 +12,10 @@ function App() {
         <NavBar />
         <Router>
           <Routes>
-            <Route path="/" element={<TranslatePage />} />
-            <Route path="/translate" element={<TranslatePage />} />
-            <Route path="/examples" element={<ExamplesPage />} />
-            <Route path="/about" element={<AboutPage />} />
+            <Route path="/latex-ai/" element={<TranslatePage />} />
+            <Route path="/latex-ai/translate" element={<TranslatePage />} />
+            <Route path="/latex-ai/examples" element={<ExamplesPage />} />
+            <Route path="/latex-ai/about" element={<AboutPage />} />
           </Routes>
         </Router>
       </div>
