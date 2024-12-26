@@ -9,6 +9,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material"
+import Diagram from "../static/architectural-diagram.png"
 
 export default function AboutPage() {
   const tableData = [
@@ -18,14 +19,29 @@ export default function AboutPage() {
       notes: "Used for building the frontend and handling state",
     },
     {
+      technology: "Vite",
+      use: "Frontend Bundling",
+      notes: "Used for bundling the frontend",
+    },
+    {
+      technology: "Typescript",
+      use: "Static Typing",
+      notes: "Used for static typing in the frontend",
+    },
+    {
       technology: "MUI library",
       use: "Frontend Styling",
       notes: "Used as a component library for styling the frontend",
     },
-
+    {
+      technology: "Katex",
+      use: "Latex Rendering",
+      notes:
+        "Used to render the Latex syntax in the frontend. Katex is a fast and lightweight Latex rendering library",
+    },
     {
       technology: "FastAPI",
-      use: "Backend",
+      use: "REST API",
       notes: "Used to serve the model and handle API requests with Python",
     },
     {
@@ -35,10 +51,19 @@ export default function AboutPage() {
         "Used to convert text to Latex syntax. Controlled by prompting the model with text and prompt instructions",
     },
     {
-      technology: "Katex",
-      use: "Latex Rendering",
-      notes:
-        "Used to render the Latex syntax in the frontend. Katex is a fast and lightweight Latex rendering library",
+      technology: "Python",
+      use: "Backend Programming",
+      notes: "Used to program the backend",
+    },
+    {
+      technology: "Docker",
+      use: "Containerization",
+      notes: "Used to containerize the app for deployment",
+    },
+    {
+      technology: "Microsoft Azure",
+      use: "Deployment",
+      notes: "Used to deploy the app to a server",
     },
   ]
 
@@ -58,10 +83,9 @@ export default function AboutPage() {
           </Typography>
         </Card>{" "}
         by Meta, from <a href="https://www.groq.com">Groq Cloud.</a> The project
-        is open source and available on{" "}
+        is open source and available on my{" "}
         <a href="https://github.com/lauri-lyytikainen/latex-ai">GitHub</a>.
       </Typography>
-
       <br />
       <Typography variant="body1">
         The idea for this project came from the need to write mathematical
@@ -80,7 +104,13 @@ export default function AboutPage() {
         project is a good example of what I can do as a developer.
       </Typography>
       <br />
-
+      <Typography variant="h2">Architecture Diagram</Typography>
+      <img
+        src={Diagram}
+        alt="Architectural Diagram"
+        style={{ width: "100%" }}
+      />
+      <br />
       <Typography variant="h2">Technologies Used</Typography>
       <br />
       <TableContainer component={Card} variant="outlined">
@@ -88,10 +118,10 @@ export default function AboutPage() {
           <TableHead>
             <TableRow>
               <TableCell sx={{ fontWeight: "bold" }}>Technlogy</TableCell>
-              <TableCell align="right" sx={{ fontWeight: "bold" }}>
+              <TableCell align="left" sx={{ fontWeight: "bold" }}>
                 Use
               </TableCell>
-              <TableCell align="right" sx={{ fontWeight: "bold" }}>
+              <TableCell align="left" sx={{ fontWeight: "bold" }}>
                 Notes
               </TableCell>
             </TableRow>
@@ -104,13 +134,42 @@ export default function AboutPage() {
                 <TableCell component="th" scope="row">
                   {row.technology}
                 </TableCell>
-                <TableCell align="right">{row.use}</TableCell>
-                <TableCell align="right">{row.notes}</TableCell>
+                <TableCell align="left">{row.use}</TableCell>
+                <TableCell align="left">{row.notes}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
+      <br />
+      <Typography variant="h2">How it Works</Typography>
+      <br />
+      <Typography variant="body1">
+        The app consists of two separate parts, the frontend and the backend.
+        The frontend is built using Vite, React, and MUI. The backend is built
+        using FastAPI and Python. The frontend is responsible for taking user
+        input and sending it to the backend and rendering Latex. The backend
+        sends the user input to the model and the model then returns the Latex
+        syntax to the backend. The frontend then displays the Latex syntax to
+        the user using Katex. The user can then copy the produced output and use
+        it in their own documents.
+      </Typography>
+      <br />
+      <Typography variant="h2">What I learned</Typography>
+      <br />
+      <Typography variant="body1">
+        This is my first complete and polished fullstack web app. I learned a
+        lot about project structure, frontend-backend communication, and ci/cd
+        workflow. I also learned how to use TypeScript, FastAPI, Vite and other
+        libraries, which were completly new to me.
+      </Typography>
+      <br />
+      <Typography variant="body1">
+        I tested the frontend and backend separately and automated it. I also
+        learned how to deploy the project to a server and how to use docker to
+        containerize the app. I learned how to use Microsoft Azure to deploy the
+        REST API and how to host a SPA on GitHub Pages.
+      </Typography>
       <br />
     </Container>
   )
