@@ -8,23 +8,24 @@ export default function Footer() {
         sx={{ minHeight: "6rem", alignContent: "center" }}>
         <Stack
           direction="row"
-          spacing={2}
+          spacing={5}
           justifyContent="center"
           alignItems="center"
           sx={{ height: "100%" }}>
           <p>
-            <a href="" style={{ color: "inherit", textDecoration: "none" }}>
-              Privacy Policy
+            Made with ❤️ by{" "}
+            <a
+              style={{ color: "white" }}
+              href="http://laurilyytikainen.me/portfolio">
+              Lauri Lyytikäinen
             </a>
           </p>
           <p>
-            <a href="" style={{ color: "inherit", textDecoration: "none" }}>
-              Terms of Service
-            </a>
-          </p>
-          <p>
-            <a href="" style={{ color: "inherit", textDecoration: "none" }}>
-              Contact
+            Source code available on{" "}
+            <a
+              style={{ color: "white" }}
+              href="https://github.com/lauri-lyytikainen/latex-ai">
+              GitHub
             </a>
           </p>
         </Stack>
