@@ -26,7 +26,7 @@ export default function ExamplesPage() {
     {
       input: "Sum of x^5 - i divided by the square root of x from i 1 to 100",
       latex: "\\sum_{i=1}^{100}\\frac{x^5-i}{\\sqrt{x}}",
-      notes: "More comlpex descriptions are also possible",
+      notes: "More complex descriptions are also possible",
     },
     {
       input: "Write eight factorial with its multiplications using \\cdot",
