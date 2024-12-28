@@ -33,6 +33,7 @@ export default function TranslatePage() {
     response_type: "invalid",
   })
   const [fontSize, setFontSize] = useState(16)
+  const [showInfo, setShowInfo] = useState(true)
 
   function increaseFontSize() {
     if (fontSize < 26) {
@@ -81,6 +82,19 @@ export default function TranslatePage() {
     <Container>
       <br />
       <Typography variant="h2">Text to Latex converter</Typography>
+      <br />
+      {showInfo ? (
+        <Alert severity="info">
+          <p>
+            If the input fails to produce a result, try to change the wording or
+            add a space so the LLM can try to process the input again. This is a
+            work in progress application, so the results might not always be
+            coherent or there might be bugs.
+          </p>
+          <Button onClick={() => setShowInfo(false)}>I understand</Button>
+        </Alert>
+      ) : null}
+
       <br />
       <Stack direction={"column"} spacing={2}>
         <TextField
