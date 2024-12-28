@@ -80,7 +80,7 @@ export default function TranslatePage() {
   return (
     <Container>
       <br />
-      <Typography variant="h1">Text to Latex converter</Typography>
+      <Typography variant="h2">Text to Latex converter</Typography>
       <br />
       <Stack direction={"column"} spacing={2}>
         <TextField

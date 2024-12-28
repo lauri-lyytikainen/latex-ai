@@ -70,7 +70,7 @@ export default function AboutPage() {
   return (
     <Container>
       <br />
-      <Typography variant="h1">About</Typography>
+      <Typography variant="h2">About</Typography>
       <br />
       <Typography variant="body1">
         This is a simple web app that converts text to Latex syntax using a
@@ -104,14 +104,14 @@ export default function AboutPage() {
         project is a good example of what I can do as a developer.
       </Typography>
       <br />
-      <Typography variant="h2">Architecture Diagram</Typography>
+      <Typography variant="h3">Architecture Diagram</Typography>
       <img
         src={Diagram}
         alt="Architectural Diagram"
         style={{ width: "100%" }}
       />
       <br />
-      <Typography variant="h2">Technologies Used</Typography>
+      <Typography variant="h3">Technologies Used</Typography>
       <br />
       <TableContainer component={Card} variant="outlined">
         <Table aria-label="simple table">
@@ -142,7 +142,7 @@ export default function AboutPage() {
         </Table>
       </TableContainer>
       <br />
-      <Typography variant="h2">How it Works</Typography>
+      <Typography variant="h3">How it Works</Typography>
       <br />
       <Typography variant="body1">
         The app consists of two separate parts, the frontend and the backend.
@@ -155,7 +155,7 @@ export default function AboutPage() {
         it in their own documents.
       </Typography>
       <br />
-      <Typography variant="h2">What I learned</Typography>
+      <Typography variant="h3">What I learned</Typography>
       <br />
       <Typography variant="body1">
         This is my first complete and polished fullstack web app. I learned a
