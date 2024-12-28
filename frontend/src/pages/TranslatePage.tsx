@@ -172,10 +172,20 @@ export default function TranslatePage() {
               paddingLeft={"5rem"}
               alignContent={"center"}
               dangerouslySetInnerHTML={{
-                __html: katex.renderToString(latexResponse.latex_string, {
-                  throwOnError: false,
-                  displayMode: true,
-                }),
+                __html: (() => {
+                  // The katex library normally handles errors by throwing rendering the errors
+                  // But for some reason if for example the LLM gives a string such as
+                  // "begin{ gather}" with a leading space, the katex will exit in a way that
+                  // the whole site stops rendering. This is a workaround to handle that.
+                  try {
+                    return katex.renderToString(latexResponse.latex_string, {
+                      throwOnError: false,
+                      displayMode: true,
+                    })
+                  } catch (error: any) {
+                    return `Error: ${error.message}, try to adjust the input text.`
+                  }
+                })(),
               }}
             />
           </CardContent>
